@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"amiga-assembly.cstool": "bin/osx/cstool",
+		"amiga-assembly.vasm": {
+			"enabled": true,
+			"file": "bin/osx/vasmm68k_mot",
+			"options": [
+				"-m68000",
+				"-Fhunk",
+				"-no-opt",
+				"-nosym"
+			]
+		},
+		"amiga-assembly.vlink": {
+			"enabled": true,
+			"file": "bin/osx/vlink",
+			"includes": "*.asm",
+			"excludes": "",
+			"exefilename": "./filesys",
+			"options": [
+				"-bamigahunk",
+				"-s",
+				"-S",
+				"-Bstatic",
+				"-sc",
+				"-nosym"
+			]
+		}
+	}
+}
