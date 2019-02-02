@@ -2748,11 +2748,22 @@ debuggerproc
 	move.l a0,a2
 	moveq #1,d1
 	jsr (a0) ; debugger init
-	tst.l d1
-	beq.s .dend
-	move.l d3,a3 ; save the segs in a3
-	jsr -$8a(a6) ; createProc
-	moveq #2,d1
+	tst.l d1           
+	beq.s .dend        ; If d1 = 0 : do not run program
+	cmpi.w #36,20(a6)  ; KS version < 36 = kickstart 2.0
+	blt.s .drcproc
+	move.l d1,a3       ; kickstart >= 2.0 runCommand exists
+	jsr -$1f8(a6)      ; RunCommand
+	tst.l d0           ; test the return code 0 = error
+	bne.s .dend
+	jmp .derror
+.drcproc ; kickstart < 2.0 No runCommand - use createProc
+	move.l d3,a3       ; save the segs in a3
+	jsr -$8a(a6)       ; createProc
+	tst.l d0           ; test the return code 0 = error
+	bne.s .dend
+.derror
+	moveq #2,d1 ; error call the debugger end
 	move.l a3,a0
 	jsr (a2) ; debugger end
 .dend
