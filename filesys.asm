@@ -2750,8 +2750,8 @@ debuggerproc
 	jsr (a0) ; debugger init
 	tst.l d1
 	beq.s .dend
-	move.l d1,a3
-	jsr -$1f8(a6) ; RunCommand
+	move.l d3,a3 ; save the segs in a3
+	jsr -$8a(a6) ; createProc
 	moveq #2,d1
 	move.l a3,a0
 	jsr (a2) ; debugger end
